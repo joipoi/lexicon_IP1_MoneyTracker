@@ -60,13 +60,20 @@ namespace individualProject1_MoneyTracker
                 Console.ResetColor();
             }
 
-            Console.WriteLine("Enter month: ");
-            string month = Console.ReadLine();
+            Console.WriteLine("Enter date in format(yyyy-MM-dd): ");
+            DateTime itemDate;
+
+            while (!DateTime.TryParse(Console.ReadLine(), out itemDate))
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Please enter a date in valid format(yyyy-MM-dd)");
+                Console.ResetColor();
+            }
 
             Console.WriteLine("Is it en expense(Y/N): ");
             bool isExpense = Console.ReadLine().ToLower().Trim() == "y" ? true : false;
 
-            Item item = new Item(title,amount, month, isExpense);
+            Item item = new Item(title,amount, itemDate, isExpense);
             items.Add(item);
 
             Console.ForegroundColor = ConsoleColor.Green;
@@ -126,7 +133,13 @@ namespace individualProject1_MoneyTracker
                     }
                     break;
                 case 3:
-                    item.Month = newValue; 
+                    DateTime itemDate;
+                    while (!DateTime.TryParse(newValue, out itemDate))
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("Please enter a date in valid format(yyyy-MM-dd)");
+                        Console.ResetColor();
+                    }
                     break;
             }
             Console.ForegroundColor = ConsoleColor.Green;
@@ -173,7 +186,7 @@ namespace individualProject1_MoneyTracker
                     itemList = isAsc ? itemList.OrderBy(item => item.Amount).ToList() : itemList.OrderByDescending(item => item.Amount).ToList();
                     break;
                 case "month":
-                    itemList = isAsc ? itemList.OrderBy(item => item.Month).ToList() : itemList.OrderByDescending(item => item.Month).ToList();
+                    itemList = isAsc ? itemList.OrderBy(item => item.ItemDate).ToList() : itemList.OrderByDescending(item => item.ItemDate).ToList();
                     break;
             }
 

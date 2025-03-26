@@ -12,14 +12,14 @@ namespace individualProject1_MoneyTracker
     {
         public string Title { get; set; }
         public decimal Amount { get; set; }
-        public string Month { get; set; }
+        public DateTime ItemDate { get; set; }
         public bool IsExpense { get; set; }
 
-        public Item(string title, decimal amount, string month, bool isExpense)
+        public Item(string title, decimal amount, DateTime itemDate, bool isExpense)
         {
             Title = title;
             Amount = amount;
-            Month = month;
+            ItemDate = itemDate;
             IsExpense = isExpense;
         }
 
@@ -27,7 +27,7 @@ namespace individualProject1_MoneyTracker
         {
             char sign = IsExpense ? '-' : '+';
             //CultureInfo.CurrentCulture gets what currency is used currently
-            return $"{Title,-18} {sign}{Amount.ToString("C", CultureInfo.CurrentCulture),-19} {Month}";
+            return $"{Title,-18} {sign}{Amount.ToString("C", CultureInfo.CurrentCulture),-19} {ItemDate.ToString("MMMM")}";
         }
     }
 }

@@ -18,7 +18,7 @@ namespace individualProject1_MoneyTracker
             Console.ResetColor();
             Console.WriteLine($"You currently have {balance.ToString("C", CultureInfo.CurrentCulture)} on your account");
             Console.WriteLine("Pick an option");
-            Console.WriteLine("(1) Show items (All/Expense(s)/Income(s))");
+            Console.WriteLine("(1) Show items (All/Expenses/Incomes)");
             Console.WriteLine("(2) Add New Expense/Income");
             Console.WriteLine("(3) Edit Item");
             Console.WriteLine("(4) Remove Item");
@@ -102,7 +102,7 @@ namespace individualProject1_MoneyTracker
             Console.WriteLine("Choose properties to change");
             Console.WriteLine("(1) title");
             Console.WriteLine("(2) amount");
-            Console.WriteLine("(3) month");
+            Console.WriteLine("(3) date");
 
             int propIndex;
             while (!int.TryParse(Console.ReadLine(), out propIndex) || propIndex <= 0 || propIndex >= 4)
@@ -113,33 +113,35 @@ namespace individualProject1_MoneyTracker
             }
 
             Console.WriteLine("Choose new value for that property");
-            string newValue = Console.ReadLine();
+            string newValue;
 
             var item = items[index];
             switch (propIndex)
             {
                 case 1:
+                    newValue = Console.ReadLine();
                     item.Title = newValue; 
                     break;
                 case 2:
                     decimal amountInput;
-                    while (!decimal.TryParse(newValue, out amountInput) || amountInput < 0)
+                    while (!decimal.TryParse(Console.ReadLine(), out amountInput) || amountInput < 0)
                     {
                         Console.ForegroundColor = ConsoleColor.Red;
                         Console.WriteLine("Please enter a valid amount.");
                         Console.ResetColor();
-
-                        newValue = Console.ReadLine();
+                       
                     }
+                    item.Amount = amountInput;
                     break;
                 case 3:
                     DateTime itemDate;
-                    while (!DateTime.TryParse(newValue, out itemDate))
+                    while (!DateTime.TryParse(Console.ReadLine(), out itemDate))
                     {
                         Console.ForegroundColor = ConsoleColor.Red;
                         Console.WriteLine("Please enter a date in valid format(yyyy-MM-dd)");
                         Console.ResetColor();
                     }
+                    item.ItemDate = itemDate;
                     break;
             }
             Console.ForegroundColor = ConsoleColor.Green;
@@ -171,7 +173,7 @@ namespace individualProject1_MoneyTracker
         //if the user gives wrong input, the list just won't be sorted
         private static void DisplayItems(List<Item> itemList, string sortedBy, bool isAsc, string show)
         {
-            if (show != "all")
+            if (show == "expenses" || show == "incomes")
             {
                 bool isExpenseFilter = show == "expenses";
                 itemList = itemList.Where(item => item.IsExpense == isExpenseFilter).ToList();
